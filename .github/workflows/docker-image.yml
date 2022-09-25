@@ -1,0 +1,33 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+workflow "Deploy" {
+
+  on = "push"
+
+  resolves = ["deploy"]
+
+}
+
+action "deploy" {
+
+  uses = "nerdify/ping-action@1.0.0"
+
+  secrets = ["https://GF-Music-1.nishcheypanwar1.repl.co"]
+
+}
